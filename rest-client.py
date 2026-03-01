@@ -31,10 +31,25 @@ def doAdd(addr, debug=False):
         print(json.loads(response.text))
 
 def doDotProduct(addr, debug=False):
-    pass
+    headers = {'content-type': 'application/json'}
+    dotproduct_url = addr + "/api/dotproduct"
+    response = requests.post(dotproduct_url, headers=headers, json={'a': [random.random() for _ in range(100)], 'b': [random.random() for _ in range(100)]})
+    if debug:
+        # decode response
+        print("Response is", response)
+        print(json.loads(response.text))
 
 def doJsonImage(addr, debug=False):
-    pass
+    headers = {'content-type': 'application/json'}
+    img = open('Flatirons_Winter_Sunrise_edit_2.jpg', 'rb').read()
+    
+    jsonimage_url = addr + "/api/jsonimage"
+    # decode converts the bytes into a string for json payload
+    response = requests.post(jsonimage_url, headers=headers, json={'image': base64.b64encode(img).decode('utf-8')})
+    if debug:
+        # decode response
+        print("Response is", response)
+        print(json.loads(response.text))
 
 if len(sys.argv) < 3:
     print(f"Usage: {sys.argv[0]} <server ip> <cmd> <reps>")
@@ -45,13 +60,13 @@ host = sys.argv[1]
 cmd = sys.argv[2]
 reps = int(sys.argv[3])
 
-addr = f"http://{host}:5000"
+addr = f"http://{host}:5001"
 print(f"Running {reps} reps against {addr}")
 
 if cmd == 'rawImage':
     start = time.perf_counter()
     for x in range(reps):
-        doRawImage(addr)
+        doRawImage(addr, debug=True)
     delta = ((time.perf_counter() - start)/reps)*1000
     print("Took", delta, "ms per operation")
 elif cmd == 'add':

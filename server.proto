@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.server";
+option java_outer_classname = "ServerProto";
+option objc_class_prefix = "srvr";
+
+package server;
+
+service Server {
+   rpc Add(addMsg) returns (addReply) {}
+ 
+   rpc RawImage(rawImageMsg) returns (imageReply) {}
+
+   rpc DotProduct(dotProductMsg) returns (dotProductReply) {}
+
+   rpc JsonImage(jsonImageMsg) returns (imageReply) {}
+}
+
+message addMsg {
+  int32 a = 1;
+  int32 b = 2;
+}
+
+message rawImageMsg {
+    bytes img=1;
+}
+
+message dotProductMsg {
+    repeated float a = 1;
+    repeated float b = 2;
+  }
+  
+message jsonImageMsg {
+      string img=1;
+  }
+
+message addReply {
+    int32 sum = 1;
+}
+
+message dotProductReply {
+    float dotproduct = 1;
+}
+
+message imageReply {
+    int32 width=1;
+    int32 height=2;
+}
